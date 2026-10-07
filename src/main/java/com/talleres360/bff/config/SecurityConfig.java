@@ -49,6 +49,16 @@ public class SecurityConfig {
 				// Eliminar: solo administrador
 				.requestMatchers(HttpMethod.DELETE, "/api/orders/**")
 					.access(scopeAndRoles("Admin"))
+				// Catalogo: lo consulta el taller; precios y stock los cambia solo el administrador
+				.requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**")
+					.access(scopeAndRoles("Admin", "Operador"))
+				.requestMatchers(HttpMethod.POST, "/api/products")
+					.access(scopeAndRoles("Admin"))
+				.requestMatchers(HttpMethod.PUT, "/api/products/**")
+					.access(scopeAndRoles("Admin"))
+				// Reportes de ventas y auditoria: solo administrador
+				.requestMatchers(HttpMethod.GET, "/api/reports/**")
+					.access(scopeAndRoles("Admin"))
 				.anyRequest().denyAll())
 			.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 

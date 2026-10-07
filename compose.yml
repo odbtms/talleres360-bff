@@ -1,9 +1,9 @@
 # BFF Talleres360 (VM ec2-bff)
 # Uso: docker compose up -d --build
-# Variables (.env): ENTRA_TENANT_ID, API_CLIENT_ID, ORDERS_URL, CORS_ALLOWED_ORIGINS
+# Variables (.env): ENTRA_TENANT_ID, API_CLIENT_ID, ORDERS_URL, CATALOG_URL, REPORT_URL, INTERNAL_API_KEY, CORS_ALLOWED_ORIGINS
 #
-# Unico servicio expuesto (8080, destino del API Gateway). Los microservicios viven en otra VM
-# (ec2-apps) y se llaman por su IP privada: ORDERS_URL=http://<IP privada de ec2-apps>:8081
+# Unico servicio expuesto (8080, destino del API Gateway). Cada microservicio vive en su propia VM
+# y se llama por su IP privada: orders 8081, catalog 8082, report 8083
 
 services:
   bff:
@@ -17,6 +17,9 @@ services:
       ENTRA_TENANT_ID: ${ENTRA_TENANT_ID}
       API_CLIENT_ID: ${API_CLIENT_ID}
       ORDERS_URL: ${ORDERS_URL}
+      CATALOG_URL: ${CATALOG_URL}
+      REPORT_URL: ${REPORT_URL}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
       # DEBUG para diagnosticar 401/403 (ver las authorities del token)
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: ${SECURITY_LOG_LEVEL:-INFO}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
